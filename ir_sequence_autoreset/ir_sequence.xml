@@ -7,7 +7,7 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="base.sequence_view" />
             <field name="arch" type="xml">
-                <xpath expr="//notebook/page[@string='Sequence']/group" position="after">
+                <xpath expr="//notebook/page/group" position="after">
                     <group col="4" string="Auto Reset" attrs="{'invisible': [('implementation','!=', 'standard')]}">
                         <field name="auto_reset"/>
                         <newline/>
