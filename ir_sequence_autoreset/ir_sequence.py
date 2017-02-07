@@ -51,9 +51,9 @@ class IrSequence(models.Model):
     auto_reset = fields.Boolean('Auto Reset')
     reset_period = fields.Selection(
             [('year', 'Every Year'), ('month', 'Every Month'), ('woy', 'Every Week'), ('day', 'Every Day'), ('h24', 'Every Hour'), ('min', 'Every Minute'), ('sec', 'Every Second')],
-            'Reset Period', required=True)
+             'Reset Period', required=False)
     reset_time = fields.Char('Name', size=64, help="")
-    reset_init_number = fields.Integer('Reset Number', required=True, help="Reset number of this sequence")
+    reset_init_number = fields.Integer('Reset Number', help="Reset number of this sequence")
 
 
     _defaults = {
@@ -107,8 +107,9 @@ class IrSequence(models.Model):
             self.env.cr.execute("SELECT nextval('ir_sequence_%03d')" % seq['id'])
             seq['number_next'] = self.env.cr.fetchone()
         else:
-            self.env.cr.execute("SELECT number_next FROM ir_sequence WHERE id=%s FOR UPDATE NOWAIT", (seq['id'],))
-            self.env.cr.execute("UPDATE ir_sequence SET number_next=number_next+number_increment WHERE id=%s ", (seq['id'],))
+            # self.env.cr.execute("SELECT number_next FROM ir_sequence WHERE id=%s FOR UPDATE NOWAIT", (seq['id'],))
+            # self.env.cr.execute("UPDATE ir_sequence SET number_next=number_next+number_increment WHERE id=%s ", (seq['id'],))
+            return super(IrSequence, self)._next()
         d = self._interpolation_dict()
         try:
             interpolated_prefix = self._interpolate(seq['prefix'], d)
