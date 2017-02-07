@@ -53,7 +53,7 @@ class IrSequence(models.Model):
             [('year', 'Every Year'), ('month', 'Every Month'), ('woy', 'Every Week'), ('day', 'Every Day'), ('h24', 'Every Hour'), ('min', 'Every Minute'), ('sec', 'Every Second')],
             'Reset Period', required=True)
     reset_time = fields.Char('Name', size=64, help="")
-    reset_init_number = fields.Integer('Reset Number', required=True, help="Reset number of this sequence")
+    reset_init_number = fields.Integer('Reset Number', 'readonly':[('auto_reset','=', False)], required=True, help="Reset number of this sequence")
 
 
     _defaults = {
@@ -90,6 +90,7 @@ class IrSequence(models.Model):
     def _next(self):
         if not self.ids:
             return False
+        force_company = False
         if not self.env.context.get('force_company'):
             force_company = self.env.user.company_id.id
         sequences = self.read(['name', 'company_id', 'implementation', 'number_next', 'prefix', 'suffix', 'padding', 'number_increment', 'auto_reset', 'reset_period', 'reset_time', 'reset_init_number'])
