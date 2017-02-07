@@ -53,7 +53,7 @@ class IrSequence(models.Model):
             [('year', 'Every Year'), ('month', 'Every Month'), ('woy', 'Every Week'), ('day', 'Every Day'), ('h24', 'Every Hour'), ('min', 'Every Minute'), ('sec', 'Every Second')],
             'Reset Period', required=True)
     reset_time = fields.Char('Name', size=64, help="")
-    reset_init_number = fields.Integer('Reset Number', 'readonly':[('auto_reset','=', False)], required=True, help="Reset number of this sequence")
+    reset_init_number = fields.Integer('Reset Number', required=True, help="Reset number of this sequence")
 
 
     _defaults = {
